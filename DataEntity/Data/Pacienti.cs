@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataEntity.Data.Enum;
+using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,23 +9,33 @@ using System.Threading.Tasks;
 
 namespace DataEntity.Data
 {
-    public class Pacienti
+    [AddINotifyPropertyChangedInterface]
+    public class Pacienti : Base.BaseModel
     {
         [Key]
-        public int PacientID (get; set; }
-    [Required (ErrorMessage = "Jméno je povinné.")]
+        public int ID { get; set; }
+
+        public TitleBefore Titulpřed { get; set; }
+        [Required(ErrorMessage = "Jméno je povinné.")]
         [StringLength(50, ErrorMessage = "Jméno nesmí být delší než 50 znaků.")]
-        public string Jmeno { get; set; }
+        public string Jmeno { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Příjmení je povinné.")]
         [StringLength(50, ErrorMessage = "Příjmení nesmí být delší než 50 znaků.")]
-        public string Prijmeni { get; set; }
+        public string Prijmeni { get; set; } = string.Empty;
+        public TitleAfter Titulza { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime DatumNarozeni { get; set; }
+
         [StringLength(100, ErrorMessage = "Adresa nesmí být delší než 100 znaků.")]
-        public string Adresa { get; set; }
+        public string Adresa { get; set; } = string.Empty;
+
         [Phone(ErrorMessage = "Neplatné telefonní číslo.")]
-        public string Telefon { get; set; }
-        [EmailAddress(ErrorMessage = "Neplatná emailová adresa.")]
-        public string Email { get; set; }
+        public Gender Pohlaví { get; set; }
+        public string Cislo_pojistence { get; set; } = string.Empty;
+        public InsuranceCompany Pojistovna { get; set; }
+        public string Doctor { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
     }
-}
+}  

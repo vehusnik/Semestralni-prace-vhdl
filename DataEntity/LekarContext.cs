@@ -10,9 +10,10 @@ namespace DataEntity
             {
                 optionsBuilder.UseSqlServer(
                     "Data Source=(localdb)\\MSSQLLocalDB;" +
-                    "Initial Catalog=Sklad2025_v2;" +
+                    "Initial Catalog=DatabazePacienti;" +
                     "Integrated Security=True;" +
                     "TrustServerCertificate=True").UseLazyLoadingProxies();
             }
         }
+    }
 }
