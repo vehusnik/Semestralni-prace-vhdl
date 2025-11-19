@@ -37,5 +37,8 @@ namespace DataEntity.Data
         public InsuranceCompany Pojistovna { get; set; }
         public string Doctor { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
+
+        // navigation to one medical report (nullable if no report yet)
+        public virtual Lekarskazprava? Lekarskazprava { get; set; }
     }
 }  
