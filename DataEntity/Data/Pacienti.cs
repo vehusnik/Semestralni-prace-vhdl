@@ -13,8 +13,7 @@ namespace DataEntity.Data
     public class Pacienti : Base.BaseModel
     {
         [Key]
-        public int ID { get; set; }
-
+        public int Id { get; set; }
         public TitleBefore Titulpřed { get; set; }
         [Required(ErrorMessage = "Jméno je povinné.")]
         [StringLength(50, ErrorMessage = "Jméno nesmí být delší než 50 znaků.")]
@@ -30,8 +29,6 @@ namespace DataEntity.Data
 
         [StringLength(100, ErrorMessage = "Adresa nesmí být delší než 100 znaků.")]
         public string Adresa { get; set; } = string.Empty;
-
-        [Phone(ErrorMessage = "Neplatné telefonní číslo.")]
         public Gender Pohlaví { get; set; }
         public string Cislo_pojistence { get; set; } = string.Empty;
         public InsuranceCompany Pojistovna { get; set; }

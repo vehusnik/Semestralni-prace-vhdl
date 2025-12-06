@@ -19,7 +19,7 @@
     </UserControl.Resources>
 
     <UserControl.DataContext>
-        <vm:PrehledPacientuVM />
+        <vm:PřehledPacientuVM />
     </UserControl.DataContext>
 
     <Grid Margin="10">
