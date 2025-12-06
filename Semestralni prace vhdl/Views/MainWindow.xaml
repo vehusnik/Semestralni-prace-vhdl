@@ -1,47 +1,88 @@
 ﻿<Window x:Class="Semestralni_prace_vhdl.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Semestralni_prace_vhdl"
-        xmlns:vm="clr-namespace:Semestralni_prace_vhdl.ViewModels"
-        mc:Ignorable="d"
-        Title="Přehled pacientů" Height="450" Width="800"
+        Title="Evidenční systém lékaře" Height="500" Width="900"
         WindowStartupLocation="CenterScreen">
 
-    <Window.DataContext>
-        <vm:PřehledPacientuVM />
-    </Window.DataContext>
-
-    <Grid Margin="10">
+    <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="0"
-                  ItemsSource="{Binding Pacienti}"
-                  SelectedItem="{Binding VybranyPacient}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  SelectionMode="Single"
-                  Margin="0,0,0,10">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50" />
+        <Border Grid.Row="0" Background="#808080" Padding="30">
+            <TextBlock Text="Evidenční systém lékaře" FontSize="36" HorizontalAlignment="Center"/>
+        </Border>
 
-                <DataGridTextColumn Header="Jméno" Binding="{Binding Jmeno}" Width="*" />
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                <DataGridTextColumn Header="Příjmení" Binding="{Binding Prijmeni}" Width="*" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,40">
 
-                <DataGridTextColumn Header="Rodné číslo" Binding="{Binding Cislo_pojistence}" Width="150" />
-            </DataGrid.Columns>
-        </DataGrid>
+                <Button Margin="0,0,20,0" 
+                        Background="Transparent" 
+                        BorderThickness="0" 
+                        Cursor="Hand"
+                        Click="OtevritSeznam_Click">
+                    <TextBlock Text="🔍" 
+                               FontSize="45" 
+                               RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0.625"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Button>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Napsat lékařskou zprávu"
-                    Command="{Binding OtevritZpravuCommand}"
-                    Padding="10,5"
-                    Height="30" />
+                <Border Height="65" Width="550" BorderThickness="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="#B0B0B0">
+                            <TextBlock Text="Vyhledat&#x0a;pacienta:" 
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       TextAlignment="Center"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="#333333"/>
+                        </Border>
+
+                        <Border Grid.Column="1" Background="#E0E0E0">
+                            <TextBox x:Name="TxtVyhledavani"
+                                     Text="Zadejte jméno a příjmení" 
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     FontStyle="Italic"
+                                     FontSize="20"
+                                     Foreground="#606060"
+                                     GotFocus="TxtVyhledavani_GotFocus"
+                                     LostFocus="TxtVyhledavani_LostFocus"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="80,0,0,0">
+                <TextBlock Text="☰" FontSize="50" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                <Button Width="220" Height="65" 
+                        Background="#B0B0B0" 
+                        BorderThickness="0" 
+                        Cursor="Hand"
+                        Click="OtevritSeznam_Click">
+                    <TextBlock Text="Seznam pacientů" FontSize="20" FontWeight="SemiBold"/>
+                </Button>
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>
