@@ -19,19 +19,33 @@ namespace Semestralni_prace_vhdl.Views
         }
 
         // --- HLAVNÍ METODA PRO AKTUALIZACI SEZNAMU ---
-        private void NacistData()
+        private void NacistData(string filter = "")
         {
-            // Vytvoříme nové připojení k databázi
             using (var db = new LekarContext())
             {
-                // Stáhneme aktuální seznam všech pacientů
-                // .ToList() zajistí okamžité provedení SQL dotazu
-                var seznam = db.Pacienti.ToList();
+                var dotaz = db.Pacienti.AsQueryable();
 
-                // Naplníme tabulku (DataGrid) daty
-                // Ujistěte se, že v XAML se tabulka jmenuje x:Name="DG_Pacienti"
+                // Pokud je zadán filtr, aplikujeme ho
+                if (!string.IsNullOrWhiteSpace(filter))
+                {
+                    filter = filter.ToLower();
+                    dotaz = dotaz.Where(p => 
+                        p.Jmeno.Contains(filter) || 
+                        p.Prijmeni.Contains(filter) || 
+                        p.Adresa.Contains(filter) || 
+                        p.Cislo_pojistence.Contains(filter) ||
+                        p.Doctor.Contains(filter));
+                }
+
+                var seznam = dotaz.OrderBy(p => p.Id).ToList();
                 DG_Pacienti.ItemsSource = seznam;
             }
+        }
+
+        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            NacistData(textBox.Text);
         }
 
         // Tlačítko PŘIDAT PACIENTA

@@ -10,6 +10,9 @@ namespace Semestralni_prace_vhdl
         {
             base.OnStartup(e);
 
+            // Hook up global exception handler
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
             // Automatické vytvoření databáze při startu (pokud neexistuje)
             using (var db = new LekarContext())
             {
@@ -17,7 +20,19 @@ namespace Semestralni_prace_vhdl
                 // POZOR: Pokud změníte model (přidáte sloupec), toto nebude fungovat 
                 // a budete muset databázi smazat nebo použít Migrace.
                 db.Database.EnsureCreated();
+
+                // Seed databáze
+                Semestralni_prace_vhdl.Helpers.DbSeeder.Initialize(db);
             }
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            // Log error to console/stderr so we can see it in 'dotnet run' output
+            System.Console.Error.WriteLine("CRITICAL EXCEPTION: " + e.Exception.ToString());
+            
+            // Optionally prevent default crash behavior if you want to inspect 
+            // e.Handled = true; 
         }
     }
 }

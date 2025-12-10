@@ -22,50 +22,5 @@ namespace Semestralni_prace_vhdl.Views
             InitializeComponent();
             this.DataContext = new LekarskaZpravaVM();
         }
-
-        // 3. Tlačítko ULOŽIT
-        private void BtnUlozitZpravu_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Získáme data z ViewModelu
-                var viewModel = (LekarskaZpravaVM)this.DataContext;
-                var zpravaKUlozeni = viewModel.NovaZprava;
-
-                // Jednoduchá validace
-                if (string.IsNullOrWhiteSpace(zpravaKUlozeni.Popis))
-                {
-                    MessageBox.Show("Vyplňte prosím popis obtíží.");
-                    return;
-                }
-
-                // Otevřeme nové připojení pro uložení
-                using (var db = new LekarContext())
-                {
-                    // Protože 'zpravaKUlozeni' byla vytvořena ve ViewModelu (kde už je kontext zavřený),
-                    // je nyní "detached" (odpojená). Můžeme ji bezpečně přidat.
-                    db.LekarskeZpravy.Add(zpravaKUlozeni);
-                    db.SaveChanges();
-                }
-
-                MessageBox.Show("Zpráva byla úspěšně uložena.");
-
-                // AKTUALIZACE UI:
-                // 1. Přidáme zprávu do seznamu historie, aby ji uživatel hned viděl v tabulce vpravo
-                viewModel.HistorieZprav.Insert(0, zpravaKUlozeni);
-
-                // 2. Vyčistíme formulář pro psaní další zprávy (vytvoříme novou instanci)
-                viewModel.NovaZprava = new Lekarskazprava
-                {
-                    PacientId = zpravaKUlozeni.PacientId,
-                    DatumVysetreni = DateTime.Now,
-                    Lekar = zpravaKUlozeni.Lekar
-                };
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Chyba při ukládání: " + ex.Message);
-            }
-        }
     }
 }

@@ -17,9 +17,13 @@ namespace DataEntity.Data
 
         public DateTime DatumVysetreni { get; set; } = DateTime.Now;
 
-        public string Popis { get; set; }      // Příznaky
-        public string Diagnoza { get; set; }
-        public string Doporuceni { get; set; } // Léčba
-        public string Lekar { get; set; }      // Jméno lékaře
+        [Required(ErrorMessage = "Popis je povinný.")]
+        public string Popis { get; set; } = string.Empty;      // Příznaky
+        
+        public string Diagnoza { get; set; } = string.Empty;
+        public string Doporuceni { get; set; } = string.Empty; // Léčba
+        
+        [Required(ErrorMessage = "Lékař je povinný.")]
+        public string Lekar { get; set; } = string.Empty;      // Jméno lékaře
     }
 }
