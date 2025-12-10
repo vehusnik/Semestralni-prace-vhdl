@@ -1,0 +1,130 @@
+﻿<Window x:Class="Semestralni_prace_vhdl.Views.NovyPacientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:Semestralni_prace_vhdl.Converters" 
+        Title="Nový pacient" Height="650" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <conv:EnumDescriptionConverter x:Key="EnumConverter"/>
+
+        <DataTemplate x:Key="EnumTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+        </DataTemplate>
+
+        <Style TargetType="Label">
+            <Setter Property="Background" Value="#D3D3D3"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#B0B0B0" Padding="15">
+            <TextBlock Text="Nový pacient" FontSize="28" Foreground="Black" HorizontalAlignment="Center" FontFamily="Segoe UI Light"/>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="30,20,30,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="#C0C0C0" Padding="15,5" Margin="0,0,15,0">
+                <TextBlock Text="Pacient ID" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Grid.Column="1" Text="{Binding Pacient.Id, StringFormat={}ID: {0} (Generováno automaticky)}" VerticalAlignment="Center" FontStyle="Italic" Foreground="Gray"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="30,10,30,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label Content="Titul před"/>
+                <ComboBox Width="70" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding TitulyPred}"
+                          SelectedItem="{Binding Pacient.Titulpřed}" 
+                          ItemTemplate="{StaticResource EnumTemplate}"/>
+
+                <Label Content="Jméno"/>
+                <TextBox Width="150" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                         Text="{Binding Pacient.Jmeno, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Příjmení"/>
+                <TextBox Width="150" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                         Text="{Binding Pacient.Prijmeni, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Titul za"/>
+                <ComboBox Width="70" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding TitulyZa}"
+                          SelectedItem="{Binding Pacient.Titulza}"
+                          ItemTemplate="{StaticResource EnumTemplate}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Label Content="Datum Narození"/>
+                <DatePicker Width="120" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                            SelectedDate="{Binding Pacient.DatumNarozeni}"/>
+
+                <Label Content="Adresa"/>
+                <TextBox Width="200" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                         Text="{Binding Pacient.Adresa, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Pohlaví"/>
+                <ComboBox Width="80" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding PohlaviMožnosti}"
+                          SelectedItem="{Binding Pacient.Pohlaví}"
+                          ItemTemplate="{StaticResource EnumTemplate}"/>
+
+                <Label Content="Lékař"/>
+                <TextBox Width="120" VerticalContentAlignment="Center"
+                         Text="{Binding Pacient.Doctor, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <Label Content="Číslo pojištěnce"/>
+                <TextBox Width="180" Margin="0,0,20,0" VerticalContentAlignment="Center"
+                         Text="{Binding Pacient.Cislo_pojistence, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Pojišťovna"/>
+                <ComboBox Width="150" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding Pojistovny}"
+                          SelectedItem="{Binding Pacient.Pojistovna}"
+                          ItemTemplate="{StaticResource EnumTemplate}"/>
+            </StackPanel>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Poznámky" VerticalContentAlignment="Top" Height="80"/>
+                <TextBox Grid.Column="1" VerticalContentAlignment="Top" Padding="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="80"
+                         Text="{Binding Pacient.Notes, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="3" Padding="20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="💾" FontSize="30" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Button Content="Uložit" Click="BtnUlozit_Click" Width="120" Height="40" Background="#C0C0C0" BorderThickness="0" FontWeight="SemiBold" FontSize="16"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

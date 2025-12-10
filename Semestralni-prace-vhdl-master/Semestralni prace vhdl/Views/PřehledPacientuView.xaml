@@ -1,0 +1,114 @@
+﻿<Window x:Class="Semestralni_prace_vhdl.Views.PřehledPacientuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:Semestralni_prace_vhdl.Converters"
+        Title="Seznam pacientů" Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <conv:EnumDescriptionConverter x:Key="EnumConverter"/>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Background" Value="#E0E0E0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="Gray" Padding="10">
+            <TextBlock Text="Seznam pacientů" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       Foreground="White" 
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <DataGrid x:Name="DG_Pacienti" Grid.Row="1" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" SelectionMode="Single"
+                  HeadersVisibility="Column" Background="White">
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Titul před" Binding="{Binding Titulpřed, Converter={StaticResource EnumConverter}}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Jméno" Binding="{Binding Jmeno}" Width="*"/>
+                <DataGridTextColumn Header="Příjmení" Binding="{Binding Prijmeni}" Width="*"/>
+
+                <DataGridTextColumn Header="Titul za" Binding="{Binding Titulza, Converter={StaticResource EnumConverter}}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Datum narození" Binding="{Binding DatumNarozeni, StringFormat=dd.MM.yyyy}" Width="Auto"/>
+                <DataGridTextColumn Header="Adresa" Binding="{Binding Adresa}" Width="*"/>
+
+                <DataGridTextColumn Header="Pohlaví" Binding="{Binding Pohlaví, Converter={StaticResource EnumConverter}}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Číslo pojištěnce" Binding="{Binding Cislo_pojistence}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Pojišťovna" Binding="{Binding Pojistovna, Converter={StaticResource EnumConverter}}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Lékař" Binding="{Binding Doctor}" Width="Auto"/>
+
+                <DataGridTextColumn Header="Poznámky" Binding="{Binding Notes}" Width="*"/>
+
+                <DataGridTemplateColumn Header="Detail pacienta" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="BtnDetail_Click" Background="Transparent" BorderThickness="0" HorizontalAlignment="Center">
+                                <TextBlock Text="🔍" FontSize="18"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+
+            <Button Click="PridatPacienta_Click" Margin="10" Padding="10,5" Background="LightGray">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="➕" Foreground="Green" FontWeight="Bold" Margin="0,0,5,0"/>
+                    <TextBlock Text="PŘIDAT PACIENTA"/>
+                </StackPanel>
+            </Button>
+
+            <Button Click="PridatZpravu_Click" Margin="10" Padding="10,5" Background="LightGray">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="➕" Foreground="Green" FontWeight="Bold" Margin="0,0,5,0"/>
+                    <TextBlock Text="Přidat lékařskou zprávu"/>
+                </StackPanel>
+            </Button>
+
+            <Button Click="BtnUpravit_Click" Margin="10" Padding="10,5" Background="LightGray">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✏️" Margin="0,0,5,0"/>
+                    <TextBlock Text="UPRAVIT ÚDAJE"/>
+                </StackPanel>
+            </Button>
+
+            <Button Click="BtnOdstranit_Click" Margin="10" Padding="10,5" Background="LightGray">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="⛔" Foreground="Red" Margin="0,0,5,0"/>
+                    <TextBlock Text="ODSTRANIT"/>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</Window>
