@@ -1,0 +1,17 @@
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\bin\Debug\net9.0\DataEntity.deps.json
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\bin\Debug\net9.0\DataEntity.runtimeconfig.json
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\bin\Debug\net9.0\DataEntity.dll
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\bin\Debug\net9.0\DataEntity.pdb
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.csproj.AssemblyReference.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.AssemblyInfoInputs.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.AssemblyInfo.cs
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.csproj.CoreCompileInputs.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.csproj.Fody.CopyLocal.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.csproj.Fody.RuntimeCopyLocal.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.dll
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\refint\DataEntity.dll
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.pdb
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.genruntimeconfig.cache
+D:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\ref\DataEntity.dll
+d:\Projekt\Semestralni-prace-vhdl-master\DataEntity\obj\Debug\net9.0\DataEntity.sourcelink.json
