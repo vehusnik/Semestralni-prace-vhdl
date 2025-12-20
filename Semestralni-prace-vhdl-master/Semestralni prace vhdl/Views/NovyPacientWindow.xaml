@@ -1,0 +1,211 @@
+﻿<Window x:Class="Semestralni_prace_vhdl.Views.NovyPacientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:conv="clr-namespace:Semestralni_prace_vhdl.Converters"
+        xmlns:vm="clr-namespace:Semestralni_prace_vhdl.ViewModels"
+        xmlns:data="clr-namespace:DataEntity.Data;assembly=DataEntity"
+        Title="Karta pacienta" Height="650" Width="900"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <conv:EnumDescriptionConverter x:Key="EnumConverter"/>
+
+        <DataTemplate x:Key="EnumTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource EnumConverter}}"/>
+        </DataTemplate>
+
+        <!-- Styles -->
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="#E74C3C" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" CornerRadius="5" Background="White" BorderBrush="#DDD" BorderThickness="1">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost"/>
+                                <TextBlock x:Name="Watermark" 
+                                           Text="{TemplateBinding Tag}" 
+                                           Foreground="#AAA" 
+                                           Margin="7,0,0,0" 
+                                           VerticalAlignment="Center" 
+                                           IsHitTestVisible="False"
+                                           FontStyle="Italic"
+                                           Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#4CA1AF"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#E74C3C"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter TargetName="border" Property="Background" Value="#FFF5F5"/>
+                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+        
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Background Gradient -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF2C3E50" Offset="0.0"/>
+                <GradientStop Color="#FF4CA1AF" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="KARTA PACIENTA" 
+                   FontSize="28" 
+                   FontWeight="Bold" 
+                   Foreground="White" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,20"
+                   FontFamily="Segoe UI Light"/>
+
+        <!-- Form Card -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" Margin="40,0,40,20" Padding="30">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.2"/>
+            </Border.Effect>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Left Column -->
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Titul před"/>
+                        <ComboBox ItemsSource="{Binding TitulyPred}"
+                                  SelectedItem="{Binding Pacient.Titulpřed}"
+                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+
+                        <Label Content="Jméno"/>
+                        <TextBox Text="{Binding Pacient.Jmeno, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                 Tag="Max 50 znaků, bez číslic"/>
+
+                        <Label Content="Příjmení"/>
+                        <TextBox Text="{Binding Pacient.Prijmeni, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                 Tag="Max 50 znaků, bez číslic"/>
+
+                        <Label Content="Titul za"/>
+                        <ComboBox ItemsSource="{Binding TitulyZa}" 
+                                  SelectedItem="{Binding Pacient.Titulza}"
+                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+
+                        <Label Content="Datum narození"/>
+                        <DatePicker SelectedDate="{Binding Pacient.DatumNarozeni}"/>
+
+                        <Label Content="Pohlaví"/>
+                        <ComboBox ItemsSource="{Binding PohlaviMožnosti}" 
+                                  SelectedItem="{Binding Pacient.Pohlaví}"
+                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+                    </StackPanel>
+
+                    <!-- Right Column -->
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Adresa"/>
+                        <TextBox Text="{Binding Pacient.Adresa, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                 Tag="Max 100 znaků"/>
+
+                        <Label Content="Číslo pojištěnce"/>
+                        <TextBox Text="{Binding Pacient.Cislo_pojistence, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                 Tag="Max 10 číslic"/>
+
+                        <Label Content="Pojišťovna"/>
+                        <ComboBox ItemsSource="{Binding Pojistovny}" 
+                                  SelectedItem="{Binding Pacient.Pojistovna}"
+                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+
+                        <Label Content="Ošetřující lékař"/>
+                        <TextBox Text="{Binding Pacient.Doctor, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                 Tag="Jméno lékaře"/>
+
+                        <Label Content="Poznámky"/>
+                        <TextBox Text="{Binding Pacient.Notes}" Height="80" TextWrapping="Wrap" VerticalContentAlignment="Top"
+                                 Tag="Nepovinné poznámky..."/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Footer Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <Button Command="{Binding SaveCommand}" 
+                    Content="ULOŽIT ZMĚNY"
+                    Background="#27ae60" Foreground="White"
+                    FontSize="16" FontWeight="Bold"
+                    Padding="40,12" Margin="10"
+                    Cursor="Hand" BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="25" Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
