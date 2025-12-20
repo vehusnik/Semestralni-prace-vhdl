@@ -40,7 +40,7 @@
         <!-- Dashboard Cards -->
         <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Click="OtevritSeznam_Click" 
-                    Background="White" BorderThickness="0" Height="200" Width="250" Cursor="Hand">
+                    Background="White" BorderThickness="0" Height="220" Width="250" Cursor="Hand">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="15" Padding="20">
