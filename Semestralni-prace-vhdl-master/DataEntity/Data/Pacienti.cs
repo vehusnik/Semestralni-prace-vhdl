@@ -14,7 +14,8 @@ namespace DataEntity.Data
     {
         [Key]
         public int Id { get; set; }
-        public TitleBefore Titulpřed { get; set; }
+        [StringLength(50, ErrorMessage = "Titul před nesmí být delší než 50 znaků.")]
+        public string Titulpřed { get; set; } = string.Empty;
         [Required(ErrorMessage = "Jméno je povinné.")]
         [StringLength(50, ErrorMessage = "Jméno nesmí být delší než 50 znaků.")]
         [RegularExpression(@"^[^0-9]+$", ErrorMessage = "Jméno nesmí obsahovat číslice.")]
@@ -24,7 +25,8 @@ namespace DataEntity.Data
         [StringLength(50, ErrorMessage = "Příjmení nesmí být delší než 50 znaků.")]
         [RegularExpression(@"^[^0-9]+$", ErrorMessage = "Příjmení nesmí obsahovat číslice.")]
         public string Prijmeni { get; set; } = string.Empty;
-        public TitleAfter Titulza { get; set; }
+        [StringLength(50, ErrorMessage = "Titul za nesmí být delší než 50 znaků.")]
+        public string Titulza { get; set; } = string.Empty;
 
         [DataType(DataType.Date)]
         public DateTime DatumNarozeni { get; set; }

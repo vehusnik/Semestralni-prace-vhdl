@@ -129,9 +129,20 @@
                     <!-- Left Column -->
                     <StackPanel Grid.Column="0">
                         <Label Content="Titul před"/>
-                        <ComboBox ItemsSource="{Binding TitulyPred}"
-                                  SelectedItem="{Binding Pacient.Titulpřed}"
-                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+                        <TextBox Text="{Binding Pacient.Titulpřed, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Např. Ing. Mgr."/>
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" ItemsSource="{Binding TitulyPred}"
+                                      SelectedItem="{Binding SelectedTitlePred}"
+                                      IsEditable="False"
+                                      Margin="0,0,5,0"
+                                      Height="30"/>
+                            <Button Grid.Column="1" Command="{Binding AddTitlePredCommand}" Content="+" Width="30" Height="30" Background="#DDD"/>
+                        </Grid>
 
                         <Label Content="Jméno"/>
                         <TextBox Text="{Binding Pacient.Jmeno, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
@@ -142,9 +153,20 @@
                                  Tag="Max 50 znaků, bez číslic"/>
 
                         <Label Content="Titul za"/>
-                        <ComboBox ItemsSource="{Binding TitulyZa}" 
-                                  SelectedItem="{Binding Pacient.Titulza}"
-                                  ItemTemplate="{StaticResource EnumTemplate}"/>
+                        <TextBox Text="{Binding Pacient.Titulza, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Např. Ph.D. MBA"/>
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" ItemsSource="{Binding TitulyZa}" 
+                                      SelectedItem="{Binding SelectedTitleZa}"
+                                      IsEditable="False"
+                                      Margin="0,0,5,0"
+                                      Height="30"/>
+                            <Button Grid.Column="1" Command="{Binding AddTitleZaCommand}" Content="+" Width="30" Height="30" Background="#DDD"/>
+                        </Grid>
 
                         <Label Content="Datum narození"/>
                         <DatePicker SelectedDate="{Binding Pacient.DatumNarozeni}"/>

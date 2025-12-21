@@ -30,13 +30,44 @@ namespace Semestralni_prace_vhdl.ViewModels
         }
 
         // --- 2. ENUMY PRO COMBOBOXY (Zdroje dat) ---
-        public IEnumerable<TitleBefore> TitulyPred => Enum.GetValues(typeof(TitleBefore)).Cast<TitleBefore>();
-        public IEnumerable<TitleAfter> TitulyZa => Enum.GetValues(typeof(TitleAfter)).Cast<TitleAfter>();
+        // Helper to get descriptions
+        private IEnumerable<string> GetEnumDescriptions<T>() where T : Enum
+        {
+             return Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .Select(e => 
+                {
+                    var field = e.GetType().GetField(e.ToString());
+                    var attr = (System.ComponentModel.DescriptionAttribute?)Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DescriptionAttribute));
+                    return attr?.Description ?? e.ToString();
+                })
+                .Where(s => s != "Žádný"); // Filter out "None" if desired, or keep it.
+        }
+
+        public IEnumerable<string> TitulyPred => GetEnumDescriptions<TitleBefore>();
+        public IEnumerable<string> TitulyZa => GetEnumDescriptions<TitleAfter>();
         public IEnumerable<Gender> PohlaviMožnosti => Enum.GetValues(typeof(Gender)).Cast<Gender>();
         public IEnumerable<InsuranceCompany> Pojistovny => Enum.GetValues(typeof(InsuranceCompany)).Cast<InsuranceCompany>();
 
+        // Properties for Picker
+        private string? _selectedTitlePred;
+        public string? SelectedTitlePred
+        {
+            get => _selectedTitlePred;
+            set { _selectedTitlePred = value; OnPropertyChanged(); }
+        }
+
+        private string? _selectedTitleZa;
+        public string? SelectedTitleZa
+        {
+            get => _selectedTitleZa;
+            set { _selectedTitleZa = value; OnPropertyChanged(); }
+        }
+
         // --- COMMANDS ---
         public ICommand SaveCommand { get; }
+        public ICommand AddTitlePredCommand { get; }
+        public ICommand AddTitleZaCommand { get; }
 
         // --- 3. KONSTRUKTORY ---
 
@@ -48,6 +79,40 @@ namespace Semestralni_prace_vhdl.ViewModels
                 DatumNarozeni = DateTime.Now // Defaultní datum (dnešek), aby tam nebylo 0001
             };
             SaveCommand = new Helpers.RelayCommand(Save, CanSave);
+            AddTitlePredCommand = new Helpers.RelayCommand(_ => AddTitle(true));
+            AddTitleZaCommand = new Helpers.RelayCommand(_ => AddTitle(false));
+        }
+
+        // Helper Method for adding titles
+        private void AddTitle(bool isPred)
+        {
+            if (isPred)
+            {
+                if (string.IsNullOrWhiteSpace(SelectedTitlePred)) return;
+                
+                if (string.IsNullOrWhiteSpace(Pacient.Titulpřed))
+                {
+                    Pacient.Titulpřed = SelectedTitlePred;
+                }
+                else
+                {
+                    Pacient.Titulpřed += " " + SelectedTitlePred;
+                }
+                OnPropertyChanged(nameof(Pacient)); 
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(SelectedTitleZa)) return;
+
+                if (string.IsNullOrWhiteSpace(Pacient.Titulza))
+                {
+                    Pacient.Titulza = SelectedTitleZa;
+                }
+                else
+                {
+                    Pacient.Titulza += " " + SelectedTitleZa;
+                }
+            }
         }
 
         // Konstruktor pro ÚPRAVU existujícího pacienta
@@ -55,14 +120,12 @@ namespace Semestralni_prace_vhdl.ViewModels
         {
             Pacient = existujiciPacient;
             SaveCommand = new Helpers.RelayCommand(Save, CanSave);
+            AddTitlePredCommand = new Helpers.RelayCommand(_ => AddTitle(true));
+            AddTitleZaCommand = new Helpers.RelayCommand(_ => AddTitle(false));
         }
 
         private bool CanSave(object? parameter)
         {
-            // Povolit uložení pouze pokud nejsou žádné validační chyby
-            // V tomto jednoduchém případě můžeme spoléhat na validaci při pokusu o uložení
-            // nebo implementovat průběžnou kontrolu validace modelu Pacient.
-            // Pro začátek povolíme vždy a validujeme při Save.
             return true; 
         }
 
@@ -106,25 +169,6 @@ namespace Semestralni_prace_vhdl.ViewModels
             var context = new ValidationContext(Pacient);
             var results = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(Pacient, context, results, true);
-
-            if (!isValid)
-            {
-                // Zde bychom mohli naplnit Errors dictionary v BaseVM, aby se chyby zobrazily v UI
-                // Ale protože bindujeme přímo vlastnosti Pacient objektu, UI validace (červený rámeček)
-                // by se měla postarat sama, pokud Pacient implementuje IDataErrorInfo nebo
-                // pokud Binding používá ValidatesOnExceptions/ValidatesOnNotifyDataErrors 
-                // a Pacient hází výjimky. 
-                
-                // Jelikož Pacient používá DataAnnotations, musíme zajistit, aby UI o chybách vědělo.
-                // Nejjednodušší cesta pro Strict MVVM s DataAnnotations na Modelu je, 
-                // aby Model implementoval INotifyDataErrorInfo (což jsme neudělali, Pacient je jen POCO s atributy)
-                // NEBO aby ViewModel "obaloval" vlastnosti.
-                
-                // V tomto případě, pro zjednodušení a zachování stávající struktury,
-                // zobrazíme chyby v MessageBoxu (jak je v kódu výše) a spoléháme na to,
-                // že WPF ValidatesOnDataErrors zobrazí chyby v UI pokud upravíme XAML.
-            }
-
             return isValid;
         }
     }

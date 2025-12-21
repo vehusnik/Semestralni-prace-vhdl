@@ -124,11 +124,15 @@ namespace DataEntity.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("Titulpřed")
-                        .HasColumnType("int");
+                    b.Property<string>("Titulpřed")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Titulza")
-                        .HasColumnType("int");
+                    b.Property<string>("Titulza")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
