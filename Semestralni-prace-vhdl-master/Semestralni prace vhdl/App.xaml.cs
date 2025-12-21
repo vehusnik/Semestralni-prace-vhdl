@@ -16,10 +16,18 @@ namespace Semestralni_prace_vhdl
             // Automatické vytvoření databáze při startu (pokud neexistuje)
             using (var db = new LekarContext())
             {
-                // Vytvoří databázi, pokud ještě není. 
-                // POZOR: Pokud změníte model (přidáte sloupec), toto nebude fungovat 
-                // a budete muset databázi smazat nebo použít Migrace.
-                db.Database.EnsureCreated();
+                try
+                {
+                    // Pokus o aplikaci migrací (vytvoří DB pokud není, nebo ji aktualizuje)
+                    db.Database.Migrate();
+                }
+                catch (System.Exception)
+                {
+                    // Pokud migrace selže (např. konflikt se starou DB vytvořenou přes EnsureCreated),
+                    // smažeme starou a vytvoříme novou čistou.
+                    db.Database.EnsureDeleted();
+                    db.Database.Migrate();
+                }
 
                 // Seed databáze
                 Semestralni_prace_vhdl.Helpers.DbSeeder.Initialize(db);
